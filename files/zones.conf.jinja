@@ -1,0 +1,33 @@
+{% set zonename = salt['pillar.get']('icinga2:zonename') -%}
+{% set endpoints = salt['pillar.get']('icinga2:endpoints') -%}
+{% set satellites = salt['pillar.get']('icinga2:satellites', [grains.nodename]) -%}
+/**
+ * {{ salt['pillar.get']('do-not-touch-msg') }}
+ */
+
+{% for endpoint in endpoints -%}
+object Endpoint "{{ endpoint['name'] }}" {
+        host = "{{ endpoint['host'] }}"
+        port = "{{ endpoint['port'] }}"
+}
+{% endfor %}
+
+object Zone "master" {
+        endpoints = [ {% for endpoint in endpoints -%}"{{ endpoint['name'] }}", {%- endfor %} ]
+}
+
+{% for satellite in satellites -%}
+object Endpoint "{{ satellite }}" {
+        host = "{{ satellite }}"
+}
+
+{% endfor %}
+object Zone "{{ zonename }}" {
+        //this is the local node = "{{ grains.nodename }}"
+        endpoints = [ "{{ satellites|join('", "') }}" ]
+        parent = "master"
+}
+
+object Zone "global-templates" {
+  global = true
+}

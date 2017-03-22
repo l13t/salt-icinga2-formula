@@ -1,0 +1,17 @@
+{% set ticket_salt = salt['pillar.get']('icinga2:master_ticket_salt', '') -%}
+/**
+ * {{ salt['pillar.get']('do-not-touch-msg') }}
+ */
+
+const PluginDir = "/usr/lib/nagios/plugins"
+
+const ManubulonPluginDir = "/usr/lib/nagios/plugins"
+
+const PluginContribDir = "/usr/lib/nagios/plugins"
+
+const NodeName = "{{ grains.nodename }}"
+
+const ZoneName = "master"
+
+const EnableNotifications = true
+const TicketSalt = "{{ ticket_salt }}"
