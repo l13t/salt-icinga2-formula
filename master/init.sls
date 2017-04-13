@@ -10,13 +10,6 @@ icinga2:
   pkg:
     - installed
 
-icinga2-service:
-  service.running:
-    - enable: True
-    - name: icinga2
-    - require:
-      - pkg: icinga2
-
 dbconfig-common:
   pkg.installed
 
@@ -91,3 +84,10 @@ icinga2-ido-pgsql-config-symlink:
     - name: /etc/icinga2/features-enabled/ido-pgsql.conf
     - target: /etc/icinga2/features-available/ido-pgsql.conf
     - force: True
+
+icinga2-service:
+  service.running:
+    - enable: True
+    - name: icinga2
+    - require:
+      - pkg: icinga2
