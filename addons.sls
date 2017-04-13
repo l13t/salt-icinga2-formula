@@ -2,7 +2,7 @@
 checks_and_plugins:
   pkg.installed:
     - pkgs:
-      {% if distrib_codename == 'trusty' %}
+      {% if distrib_codename == 'xenial' %}
       - monitoring-plugins-standard ### is not available in ubuntu 14.04
       - libmonitoring-plugin-perl ### is not available in ubuntu 14.04
       {% endif %}
