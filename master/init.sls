@@ -67,7 +67,7 @@ icinga2-ido-pgsql:
 icinga2-ido-db-install:
   cmd.run:
     - user: postgres
-    - name: "psql -h {{ ido_db_host }} -U {{ ido_db_user }} -d {{ ido_db_name }} -f /usr/share/icinga2-ido-pgsql/schema/pgsql.sql"
+    - name: "psql -U {{ ido_db_user }} -d {{ ido_db_name }} -f /usr/share/icinga2-ido-pgsql/schema/pgsql.sql"
     - timeout: 15
 
 icinga2-ido-pgsql-config:
