@@ -53,10 +53,10 @@ skip-dbconfg-for-ido-pgsql:
   debconf.set:
     - name: icinga2-ido-pgsql
     - data:
-      'icinga2-ido-pgsql/internal/skip-preseed': { 'type': 'boolean' , 'value': True }
-      'icinga2-ido-pgsql/dbconfig-upgrade': { 'type': 'boolean' , 'value': False }
-      'icinga2-ido-pgsql/dbconfig-install': { 'type': 'boolean' , 'value': False }
-      'icinga2-ido-pgsql/dbconfig-reinstall': { 'type': 'boolean' , 'value': False }
+        'icinga2-ido-pgsql/internal/skip-preseed': { 'type': 'boolean' , 'value': True }
+        'icinga2-ido-pgsql/dbconfig-upgrade': { 'type': 'boolean' , 'value': False }
+        'icinga2-ido-pgsql/dbconfig-install': { 'type': 'boolean' , 'value': False }
+        'icinga2-ido-pgsql/dbconfig-reinstall': { 'type': 'boolean' , 'value': False }
     - prereq:
       - pkg: icinga2-ido-pgsql
 
