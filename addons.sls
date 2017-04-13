@@ -1,3 +1,4 @@
+{% set distrib_codename = grains.lsb_distrib_codename %}
 checks_and_plugins:
   pkg.installed:
     - pkgs:
