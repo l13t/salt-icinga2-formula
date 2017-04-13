@@ -1,0 +1,47 @@
+{% set zone_master = [] -%}
+{% for master_conf in masters -%}
+{% set zone_master = zone_master.append(master_conf['name']) -%}
+object Endpoint "{{ master_conf['name'] }}" {
+  host = "{{ master_conf['host'] }}"
+  port = "{{ master_conf['port']|default('5665') }}"
+}
+
+{% endfor -%}
+
+object Zone "{{ masters['master_zone'] }}" {
+  endpoints = [ "{{ zone_master|join('", "') }}" ]
+}
+
+object Zone "global-templates" {
+  global = true
+}
+
+{% if satellites != {} -%}
+{% set zone_satellite = [] -%}
+{% for satellite, satellite_conf in satellites -%}
+{% set zone_satellite = zone_satellite.append(satellite) -%}
+object Endpoint "{{ satellite }}" {
+  host = "{{ satellite_conf['host'] }}"
+  port = "{{ satellite_conf['port']|default('5665') }}"
+}
+
+{% endfor -%}
+
+object Zone "{{ satellites['satellite_zone'] }}" {
+  //this is the local node = "{{ grains.nodename }}"
+  endpoints = [ "{{ satellites|join('", "') }}" ]
+  parent = "{{ masters['master_zone'] }}"
+}
+
+{% endif -%}
+
+object Endpoint "{{ agent['endpoint_name'] }}" {
+  host = "{{ agent['host'] }}"
+  port = "{{ agent['port']|default('5665') }}"
+}
+
+
+object Zone "{{ agent['zonename'] }}" {
+  endpoints = [ "agent['endpoint_name']" ]
+  parent = "{{ agent['agent_master'] }}"
+}
