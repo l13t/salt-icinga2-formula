@@ -18,12 +18,10 @@ icinga2-service:
       - pkg: icinga2
 
 dbconfig-common:
-  pkg.installed:
-    - refresh: False
+  pkg.installed
 
 postgresql:
-  pkg:
-    - installed
+  pkg.installed
 
 icinga2-ido-pgsql-create-role:
   postgres_user.present:
