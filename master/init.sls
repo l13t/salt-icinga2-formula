@@ -120,7 +120,7 @@ icinga2-pki-create-crt:
       - file: {{ ssl_csr_path }}
     - name: "icinga2 pki sign-csr --csr '{{ ssl_csr_path }}' --cert '{{ ssl_cert_path }}'"
     - unless:
-      - file: {{ ssl_cert_path }}
+      - file: icinga2-pki-create-csr
 
 icinga2-service:
   service.running:
