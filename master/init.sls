@@ -1,4 +1,4 @@
-{% set nodename = grains.nodename -%}
+{% set nodename = grains.id -%}
 {% set ido_db_host = salt['pillar.get']("icinga2:master:db_host", "127.0.0.1") -%}
 {% set ido_db_user = salt['pillar.get']("icinga2:master:db_user", "icinga2") -%}
 {% set ido_db_password = salt['pillar.get']("icinga2:master:db_password", "1qa2ws3ed") -%}
