@@ -93,7 +93,7 @@ icinga2-master-ca-cert:
     - group: nagios
     - mode: 644
     - contents: |
-      {{ salt['pillar.get']("icinga2:master:ca_crt") | indent(8) }}
+      "{{ salt['pillar.get']("icinga2:master:ca_crt") | indent(8) }}"
 
 icinga2-master-ca-key:
   file.managed:
@@ -102,7 +102,7 @@ icinga2-master-ca-key:
     - group: nagios
     - mode: 644
     - contents: |
-      {{ salt['pillar.get']("icinga2:master:ca_key") | indent(8) }}
+      "{{ salt['pillar.get']("icinga2:master:ca_key") | indent(8) }}"
 
 {% set ssl_csr_path = salt['pillar.get']("icinga2:master:ssl_csr_path", "/etc/icinga2/pki/%s.csr" % nodename) -%}
 {% set ssl_key_path = salt['pillar.get']("icinga2:master:ssl_key_path", "/etc/icinga2/pki/%s.key" % nodename) -%}
