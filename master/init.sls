@@ -1,3 +1,4 @@
+{% set nodename = grains.nodename -%}
 {% set ido_db_host = salt['pillar.get']("icinga2:master:db_host", "127.0.0.1") -%}
 {% set ido_db_user = salt['pillar.get']("icinga2:master:db_user", "icinga2") -%}
 {% set ido_db_password = salt['pillar.get']("icinga2:master:db_password", "1qa2ws3ed") -%}
@@ -84,6 +85,42 @@ icinga2-ido-pgsql-config-symlink:
     - name: /etc/icinga2/features-enabled/ido-pgsql.conf
     - target: /etc/icinga2/features-available/ido-pgsql.conf
     - force: True
+
+icinga2-master-ca-cert:
+  file.managed:
+    - name: /etc/icinga2/pki/ca.crt
+    - user: nagios
+    - group: nagios
+    - mode: 644
+    - contents: {{ salt['pillar.get']("icinga2:master:ca_crt") }}
+
+icinga2-master-ca-key:
+  file.managed:
+    - name: /etc/icinga2/pki/ca.key
+    - user: nagios
+    - group: nagios
+    - mode: 644
+    - contents: {{ salt['pillar.get']("icinga2:master:ca_key") }}
+
+{% set ssl_csr_path = salt['pillar.get']("icinga2:master:ssl_csr_path", "/etc/icinga2/pki/%s.csr" % nodename) -%}
+{% set ssl_key_path = salt['pillar.get']("icinga2:master:ssl_key_path", "/etc/icinga2/pki/%s.key" % nodename) -%}
+{% set ssl_cert_path = salt['pillar.get']("icinga2:master:ssl_cert_path", "/etc/icinga2/pki/%s.crt" % nodename) -%}
+
+icinga2-pki-create-csr:
+  cmd.run:
+    - name: "icinga2 pki new-cert --cn '{{ nodename }}' --key '{{ ssl_key_path }}' --csr '{{ ssl_csr_path }}'"
+    - unless:
+      - file:
+        - {{ ssl_key_path }}
+        - {{ ssl_csr_path }}
+
+icinga2-pki-create-crt:
+  cmd.run:
+    - require:
+      - file: {{ ssl_csr_path }}
+    - name: "icinga2 pki sign-csr --csr '{{ ssl_csr_path }}' --cert '{{ ssl_cert_path }}'"
+    - unless:
+      - file: {{ ssl_cert_path }}
 
 icinga2-service:
   service.running:
