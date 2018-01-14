@@ -6,4 +6,5 @@ icinga2:
     db_name: icinga2-ido
     cert_path: /var/lib/icinga2/certs
     nodename: <some_nodename>
+    ticket_salt: <generated_ticket_salt>
 
