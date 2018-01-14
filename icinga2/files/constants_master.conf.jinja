@@ -1,4 +1,5 @@
-{% set ticket_salt = salt['pillar.get']('icinga2:master_ticket_salt', '') -%}
+{% set ticket_salt = salt['pillar.get']('icinga2:master:ticket_salt', '') -%}
+{% set node_name = salt['pillar.get']('icinga2:master:nodename', grains.nodename) -%}
 /**
  * {{ salt['pillar.get']('do-not-touch-msg') }}
  */
@@ -9,7 +10,7 @@ const ManubulonPluginDir = "/usr/lib/nagios/plugins"
 
 const PluginContribDir = "/usr/lib/nagios/plugins"
 
-const NodeName = "{{ grains.nodename }}"
+const NodeName = "{{ node_name }}"
 
 const ZoneName = "master"
 
