@@ -1,0 +1,9 @@
+icinga2:
+  master:
+    db_host: 127.0.0.1
+    db_user: icinga2
+    db_password: <db_password>
+    db_name: icinga2-ido
+    cert_path: /var/lib/icinga2/certs
+    nodename: <some_nodename>
+
