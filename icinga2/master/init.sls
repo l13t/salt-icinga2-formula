@@ -48,9 +48,10 @@ skip-dbconfg-for-ido-pgsql:
     - name: icinga2-ido-pgsql
     - data:
         'icinga2-ido-pgsql/internal/skip-preseed': { 'type': 'boolean' , 'value': True }
-        'icinga2-ido-pgsql/dbconfig-upgrade': { 'type': 'boolean' , 'value': False }
-        'icinga2-ido-pgsql/dbconfig-install': { 'type': 'boolean' , 'value': False }
-        'icinga2-ido-pgsql/dbconfig-reinstall': { 'type': 'boolean' , 'value': False }
+        'icinga2-ido-pgsql/dbconfig-upgrade': { 'type': 'boolean' , 'value': True }
+        'icinga2-ido-pgsql/dbconfig-install': { 'type': 'boolean' , 'value': True }
+        'icinga2-ido-pgsql/dbconfig-reinstall': { 'type': 'boolean' , 'value': True }
+        'icinga2-ido-pgsql/enable': { 'type': 'boolean', 'value': True }
     - prereq:
       - pkg: icinga2-ido-pgsql
 
@@ -79,6 +80,9 @@ icinga2-ido-pgsql-config:
       db_host: {{ ido_db_host }}
     - require:
       - pkg: icinga2-ido-pgsql
+
+{% for feature in salt['pillar.get']("icinga2:master:features", "ido-pgsql") -%}
+{% endfor -%}
 
 icinga2-ido-pgsql-config-symlink:
   file.symlink:

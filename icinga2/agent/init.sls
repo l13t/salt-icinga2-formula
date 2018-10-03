@@ -14,7 +14,7 @@ icinga2-service:
       - pkg: icinga2
 
 {% set node_name = salt['pillar.get']('icinga2:agent:nodename', grains.nodename) -%}
-{% set master_host = salt['pillar.get']('icinga2:masters')[0]['host'] -%}
+{% set master_host = salt['pillar.get']('icinga2:masters')[0]['host']|default('icinga2-master') -%}
 {% set master_port = salt['pillar.get']('icinga2:masters')[0]['port']|default('5665') -%}
 
 gen-icinga2.crt:
@@ -39,7 +39,8 @@ gen-zones-file:
     - group: root
     - mode: 644
     - defaults:
-      masters: salt['pillar.get']('icinga2:masters', {})
-      satellites: salt['pillar.get']('icinga2:agents:%s:satellite' % node_name, {})
-      agent: salt['pillar.get']('icinga2:agents:%s' % node_name, {})
+      masters: {{ salt['pillar.get']('icinga2:masters', {}) }}
+      satellites: {{ salt['pillar.get']('icinga2:agents:%s:satellite' % node_name, {}) }}
+      agent: {{ salt['pillar.get']('icinga2:agents:%s' % node_name, {}) }}
       nodename: {{ node_name }}
+
